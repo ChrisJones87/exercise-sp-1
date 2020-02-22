@@ -29,7 +29,13 @@ namespace Website.Controllers
       {
          if (!ModelState.IsValid)
          {
-            return View(new LoginViewModel() { Username = login.Username, RememberMe = login.RememberMe });
+            return View("Index", login);
+         }
+
+         if(login.Username != "Chris" || login.Password != "supplypoint")
+         {
+            ModelState.AddModelError("password", "Your username or password is incorrect");
+            return View("Index", login);
          }
 
          var claims = new List<Claim>
