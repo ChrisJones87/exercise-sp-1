@@ -87,5 +87,11 @@ namespace Website.Controllers
                                        new ClaimsPrincipal(claimsIdentity),
                                        authProperties);
       }
+
+      public async Task<IActionResult> Logout()
+      {
+         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+         return RedirectToAction("Index", "Home");
+      }
    }
 }
