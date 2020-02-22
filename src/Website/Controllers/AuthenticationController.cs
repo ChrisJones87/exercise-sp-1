@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Website.Data;
+using Website.Data.Models;
 using Website.Models;
 
 namespace Website.Controllers
@@ -14,10 +18,12 @@ namespace Website.Controllers
    public class AuthenticationController : Controller
    {
       private readonly ILogger _logger;
+      private readonly WebsiteDatabaseContext _context;
 
-      public AuthenticationController(ILogger<AuthenticationController> logger)
+      public AuthenticationController(ILogger<AuthenticationController> logger, WebsiteDatabaseContext context)
       {
          _logger = logger;
+         _context = context;
       }
 
       public IActionResult Index()
@@ -32,23 +38,33 @@ namespace Website.Controllers
             return View("Index", login);
          }
 
-         if(login.Username != "Chris" || login.Password != "secure")
+         var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == login.Username, cancellationToken);
+
+         if (user == null)
          {
             ModelState.AddModelError("password", "Your username or password is incorrect");
             return View("Index", login);
          }
 
-         await SignInAsync(login);
+         var hashedPassword = Utilities.HashPassword(login.Password, user.Salt);
+
+         if (user.Password != hashedPassword)
+         {
+            ModelState.AddModelError("password", "Your username or password is incorrect");
+            return View("Index", login);
+         }
+
+         await SignInAsync(user, login.RememberMe);
 
          return RedirectToActionPermanent("Index", "Home");
       }
 
-      private async Task SignInAsync(LoginViewModel login)
+      private async Task SignInAsync(User user, bool persistent)
       {
          var claims = new List<Claim>
          {
-            new Claim(ClaimTypes.Name, login.Username),
-            new Claim("FullName", "Mr Fake User"),
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("FullName", user.Name),
             new Claim(ClaimTypes.Role, "Administrator"),
          };
 
@@ -60,7 +76,7 @@ namespace Website.Controllers
             ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
 
             // Persist the cookie after the browser closes
-            IsPersistent = login.RememberMe,
+            IsPersistent = persistent,
 
             IssuedUtc = DateTime.UtcNow,
 
