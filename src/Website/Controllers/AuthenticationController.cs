@@ -32,17 +32,24 @@ namespace Website.Controllers
             return View("Index", login);
          }
 
-         if(login.Username != "Chris" || login.Password != "supplypoint")
+         if(login.Username != "Chris" || login.Password != "secure")
          {
             ModelState.AddModelError("password", "Your username or password is incorrect");
             return View("Index", login);
          }
 
+         await SignInAsync(login);
+
+         return RedirectToActionPermanent("Index", "Home");
+      }
+
+      private async Task SignInAsync(LoginViewModel login)
+      {
          var claims = new List<Claim>
          {
-             new Claim(ClaimTypes.Name, login.Username),
-             new Claim("FullName", "Mr Fake User"),
-             new Claim(ClaimTypes.Role, "Administrator"),
+            new Claim(ClaimTypes.Name, login.Username),
+            new Claim("FullName", "Mr Fake User"),
+            new Claim(ClaimTypes.Role, "Administrator"),
          };
 
          var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -63,8 +70,6 @@ namespace Website.Controllers
          await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                                        new ClaimsPrincipal(claimsIdentity),
                                        authProperties);
-
-         return RedirectToActionPermanent("Index", "Home");
       }
    }
 }
