@@ -21,6 +21,8 @@ namespace Website
 
       public static (string Password, byte[] Salt) HashPassword(string password)
       {
+         if (string.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", nameof(password));
+
          var salt = GeneratePasswordSalt();
 
          var hashedPasswordBytes = KeyDerivation.Pbkdf2(password: password,
@@ -36,6 +38,9 @@ namespace Website
 
       public static string HashPassword(string password, byte[] salt)
       {
+         if (password == null) throw new ArgumentNullException(nameof(password));
+         if (salt == null) throw new ArgumentNullException(nameof(salt));
+
          var hashedPasswordBytes = KeyDerivation.Pbkdf2(password: password,
                                                         salt: salt,
                                                         prf: KeyDerivationPrf.HMACSHA1,
