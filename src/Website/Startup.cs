@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using React.AspNet;
 using Website.Data;
 using Website.Data.Models;
 
@@ -26,6 +29,11 @@ namespace Website
       // This method gets called by the runtime. Use this method to add services to the container.
       public void ConfigureServices(IServiceCollection services)
       {
+         services.AddHttpContextAccessor();
+         services.AddReact();
+         services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
+                 .AddV8();
+
          services.AddControllersWithViews();
 
          services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -59,6 +67,11 @@ namespace Website
          SeedDatabase(app);
 
          app.UseHttpsRedirection();
+
+         app.UseReact(config =>
+         {
+
+         });
          app.UseStaticFiles();
 
          app.UseRouting();
