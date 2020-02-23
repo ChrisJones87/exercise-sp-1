@@ -42,9 +42,13 @@
 
       const content = this.getContent();
 
-      const message = this.state.success ? "Congratulations!" : (this.state.started ? "Level started" : "Press Start Level to begin");
+      const message = this.state.success ? "Congratulations!" : (this.state.started ? "Swap the image tiles around to complete the image." : "Press Start Level to begin");
       const messageClasses = this.state.success ? "text-center text-success" : "text-center";
       const resetLevelState = this.state.started ? false : true;
+
+      const buttons = this.state.started
+         ? (<button onClick={this.resetLevel} className="btn btn-danger w-100" disabled={resetLevelState}>Reset</button>)
+         : (<button onClick={this.startLevel} className="btn btn-primary w-100">Start Level</button>);
 
       return (
          <div className="container-fluid">
@@ -57,10 +61,7 @@
 
             <div className="row mt-2">
                <div className="col">
-                  <button onClick={this.startLevel} className="btn btn-primary w-100">Start Level</button>
-               </div>
-               <div className="col">
-                  <button onClick={this.resetLevel} className="btn btn-danger w-100" disabled={resetLevelState}>Reset</button>
+                  {buttons}
                </div>
             </div>
          </div>
@@ -88,7 +89,7 @@
       newTiles[tile1Index] = tile2;
 
       const success = this.checkWinCondition(newTiles);
-      const started = !success; 
+      const started = !success;
 
       const newState = Object.assign(
          {},
