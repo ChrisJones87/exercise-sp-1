@@ -37,7 +37,7 @@
    }
 
    render() {
-      
+
 
       const content = this.getContent();
 
@@ -49,9 +49,13 @@
                {content}
             </div>
 
-            <div className="row d-flex mt-2">
-               <button onClick={this.startLevel} className="btn btn-primary mx-auto">Start Level</button>
-               <button onClick={this.resetLevel} className="btn btn-danger mx-auto">Reset</button>
+            <div className="row mt-2">
+               <div className="col">
+                  <button onClick={this.startLevel} className="btn btn-primary w-100">Start Level</button>
+               </div>
+               <div className="col">
+                  <button onClick={this.resetLevel} className="btn btn-danger w-100">Reset</button>
+               </div>
             </div>
          </div>
       );
