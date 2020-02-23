@@ -11,7 +11,7 @@ namespace Website.Controllers
 {
 
    // TODO: Re-add
-   //[Authorize]
+   [Authorize]
    public class HomeController : Controller
    {
       private readonly ILogger<HomeController> _logger;
