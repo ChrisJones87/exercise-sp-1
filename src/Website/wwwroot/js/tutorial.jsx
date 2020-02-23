@@ -3,8 +3,9 @@
    constructor(props) {
       super(props);
 
+      var tileCount = 6 * 4;
       this.state = {
-         tiles: [...Array(30).keys()],
+         tiles: [...Array(tileCount).keys()],
          selectedTile: null
       }
 
@@ -61,22 +62,45 @@
 }
 
 class Tile extends React.Component {
+
+   constructor(props) {
+      super(props);
+
+      const tileWidth = 600 / 6;
+      const tileHeight = 400 / 4;
+      const tileId = this.props.tileId;
+      const top = -(Math.floor(tileId / 4)) * (tileHeight);
+      const left = tileId < 6 ? -tileId * (tileWidth) : -(tileId % 6) * tileWidth;
+
+      this.state = {
+         tileWidth: 600 / 6,
+         tileHeight: 400 / 4,
+         top : top,
+         left : left
+      };
+   }
+
    render() {
       const selectedClass = this.props.selectedTile ? "tile-selected" : "";
-      const tileClasses = `tile w-100 text-center ${selectedClass}`;
+      const tileClasses = `tile w-100 text-center`;
+      const overlayClasses= `w-100 h-100 ${selectedClass}`
       const tileId = this.props.tileId;
-      const tileWidth = 1920 / 6;
-      const tileHeight = 1275 / 5;
-      const top = -(Math.floor(tileId / 6)) * (tileWidth);
-      const left = tileId < 6 ? -tileId * (tileHeight) : -(tileId % 6) * tileHeight;
-      const style = { backgroundPosition: `${top}px ${left}px`};
+
+      const tileWidth = 600 / 6;
+      const tileHeight = 400 / 4;
+      const top = -(Math.floor(tileId / 6)) * (tileHeight);
+      const left = tileId < 6 ? -tileId * (tileWidth) : -(tileId % 6) * tileWidth;
+
+      const style = { backgroundPosition: `${left}px ${top}px` };
       return (
          <div className={tileClasses} style={style}>
-            <h1>{this.props.tileId}</h1>
+            <div className={overlayClasses}>
+
+            </div>
          </div>
       );
    }
 }
 
 
-ReactDOM.render(<TilePuzzle imageWidth={1920} imageHeight={1275}/>, document.getElementById('content'));
+ReactDOM.render(<TilePuzzle imageWidth={600} imageHeight={400} />, document.getElementById('content'));

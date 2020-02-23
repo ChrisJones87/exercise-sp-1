@@ -81,16 +81,22 @@ body {
 */
 
 .tile-puzzle {
-   background-color:#e5e5e5
+   background-color: #e5e5e5;
+   width: 600px;
+   height: 400px;
 }
 
 .tile {
    /*background-color: #1b6ec2;*/
-   background-image: url("/images/rubberducks.jpg");
-   height: 150px;
+   background-image: url("/images/plasma.jpg");
+   height: 100px;
+   width: 100px;
    overflow: hidden;
 }
 
 .tile-selected {
-   background-color: red;
+   margin: 0px;
+   border: 2px solid red;
+   background-color: white;
+   opacity: 0.3;
 }
