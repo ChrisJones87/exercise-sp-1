@@ -1,5 +1,6 @@
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.V8;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,9 @@ namespace Website
          {
             options.UseInMemoryDatabase("Website");
          });
+
+         // Find all command handlers inside this assembly to register with MediatR
+         services.AddMediatR(typeof(Startup).Assembly);
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

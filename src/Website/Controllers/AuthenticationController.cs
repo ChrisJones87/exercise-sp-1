@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Website.Data;
-using Website.Data.Models;
+using Website.Commands;
 using Website.Models;
-using Website.Utilities;
 
 namespace Website.Controllers
 {
    public class AuthenticationController : Controller
    {
       private readonly ILogger _logger;
-      private readonly WebsiteDatabaseContext _context;
+      private readonly IMediator _mediator;
 
-      public AuthenticationController(ILogger<AuthenticationController> logger, WebsiteDatabaseContext context)
+      public AuthenticationController(ILogger<AuthenticationController> logger, IMediator mediator)
       {
          _logger = logger;
-         _context = context;
+         _mediator = mediator;
       }
 
       public IActionResult Index()
@@ -39,59 +31,23 @@ namespace Website.Controllers
             return View("Index", login);
          }
 
-         var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == login.Username, cancellationToken);
+         var command = new SignInCommand(login.Username, login.Password, login.RememberMe);
+         var success = await _mediator.Send(command, cancellationToken);
 
-         if (user == null)
+         if (!success)
          {
             ModelState.AddModelError("password", "Your username or password is incorrect");
             return View("Index", login);
          }
-
-         var hashedPassword = PasswordUtilities.HashPassword(login.Password, user.Salt);
-
-         if (user.Password != hashedPassword)
-         {
-            ModelState.AddModelError("password", "Your username or password is incorrect");
-            return View("Index", login);
-         }
-
-         await SignInAsync(user, login.RememberMe);
 
          return RedirectToActionPermanent("Index", "Home");
       }
 
-      private async Task SignInAsync(User user, bool persistent)
+      public async Task<IActionResult> Logout(CancellationToken cancellationToken)
       {
-         var claims = new List<Claim>
-         {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim("FullName", user.Name),
-            new Claim(ClaimTypes.Role, "Administrator"),
-         };
-
-         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-         var authProperties = new AuthenticationProperties
-         {
-            // 60 minute login
-            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
-
-            // Persist the cookie after the browser closes
-            IsPersistent = persistent,
-
-            IssuedUtc = DateTime.UtcNow,
-
-            RedirectUri = "/"
-         };
-
-         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                       new ClaimsPrincipal(claimsIdentity),
-                                       authProperties);
-      }
-
-      public async Task<IActionResult> Logout()
-      {
-         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+         var command = new SignOutCommand();
+         await _mediator.Send(command, cancellationToken);
+         
          return RedirectToAction("Index", "Home");
       }
    }
