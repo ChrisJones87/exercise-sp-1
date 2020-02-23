@@ -6,6 +6,16 @@ This repository contains code to meet the following exercise:
 - Store credentials securely
 - Second page must utilise a JS front-end language framework such as Angular or React and to be creative with what functionality it has
 
+# Trying It Out
+
+- Clone the GIT repo or download the code via GitHub
+- Open the solution file in Visual Studio 2019
+- Build and Run
+
+There are 2 users to log in with
+- Chris with password "secure"
+- Test with password "test"
+
 # Solution
 
 To meet these goals, I:

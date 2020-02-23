@@ -1,17 +1,45 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿
+
+/* Login page
+-------------------------------------------------- */
+
+.login-box {
+   min-width: 500px;
+}
+
+
+/* Tile Puzzle Game
+-------------------------------------------------- */
+
+.tile-puzzle {
+   background-color: #e5e5e5;
+   width: 600px;
+   height: 400px;
+}
+
+.tile {
+   /*background-color: #1b6ec2;*/
+   background-image: url("/images/plasma.jpg");
+   height: 100px;
+   width: 100px;
+   overflow: hidden;
+}
+
+.tile-selected {
+   margin: 0px;
+   border: 2px solid red;
+   background-color: white;
+   opacity: 0.3;
+}
+
+
+/* Navigation Menu
+-------------------------------------------------- */
 
 a.navbar-brand {
    white-space: normal;
    text-align: center;
    word-break: break-all;
-}
-
-
-.btn-primary {
-   color: #fff;
-   background-color: #1b6ec2;
-   border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -20,7 +48,8 @@ a.navbar-brand {
    border-color: #1861ac;
 }
 
-/* Sticky footer styles
+
+/* Font Sizes
 -------------------------------------------------- */
 html {
    font-size: 14px;
@@ -30,23 +59,6 @@ html {
    html {
       font-size: 16px;
    }
-}
-
-.border-top {
-   border-top: 1px solid #e5e5e5;
-}
-
-.border-bottom {
-   border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-   font-size: 1rem;
-   line-height: inherit;
 }
 
 /* Sticky footer styles
@@ -68,35 +80,4 @@ body {
    width: 100%;
    white-space: nowrap;
    line-height: 60px; /* Vertically center the text there */
-}
-
-
-.login-box {
-   min-width: 500px;
-}
-
-
-/*
-   Tile Puzzla Game
-*/
-
-.tile-puzzle {
-   background-color: #e5e5e5;
-   width: 600px;
-   height: 400px;
-}
-
-.tile {
-   /*background-color: #1b6ec2;*/
-   background-image: url("/images/plasma.jpg");
-   height: 100px;
-   width: 100px;
-   overflow: hidden;
-}
-
-.tile-selected {
-   margin: 0px;
-   border: 2px solid red;
-   background-color: white;
-   opacity: 0.3;
 }

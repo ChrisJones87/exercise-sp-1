@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,8 +6,6 @@ using Website.Models;
 
 namespace Website.Controllers
 {
-
-   // TODO: Re-add
    [Authorize]
    public class HomeController : Controller
    {
