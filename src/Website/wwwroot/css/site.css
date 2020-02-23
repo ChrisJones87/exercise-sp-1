@@ -85,8 +85,10 @@ body {
 }
 
 .tile {
-   background-color: #1b6ec2;
+   /*background-color: #1b6ec2;*/
+   background-image: url("/images/rubberducks.jpg");
    height: 150px;
+   overflow: hidden;
 }
 
 .tile-selected {

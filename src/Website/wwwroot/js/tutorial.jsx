@@ -13,7 +13,7 @@
    }
 
    render() {
-      const colClasses = `col-2 p-1`;
+      const colClasses = `col-2 p-0 m-0`;
 
       const tiles = this.state.tiles.map((tileId, index, arr) => {
          let selectedTile = tileId === this.state.selectedTile ? true : false;
@@ -64,8 +64,14 @@ class Tile extends React.Component {
    render() {
       const selectedClass = this.props.selectedTile ? "tile-selected" : "";
       const tileClasses = `tile w-100 text-center ${selectedClass}`;
+      const tileId = this.props.tileId;
+      const tileWidth = 1920 / 6;
+      const tileHeight = 1275 / 5;
+      const top = -(Math.floor(tileId / 6)) * (tileWidth);
+      const left = tileId < 6 ? -tileId * (tileHeight) : -(tileId % 6) * tileHeight;
+      const style = { backgroundPosition: `${top}px ${left}px`};
       return (
-         <div className={tileClasses}>
+         <div className={tileClasses} style={style}>
             <h1>{this.props.tileId}</h1>
          </div>
       );
@@ -73,4 +79,4 @@ class Tile extends React.Component {
 }
 
 
-ReactDOM.render(<TilePuzzle />, document.getElementById('content'));
+ReactDOM.render(<TilePuzzle imageWidth={1920} imageHeight={1275}/>, document.getElementById('content'));
