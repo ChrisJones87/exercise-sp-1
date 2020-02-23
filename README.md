@@ -12,7 +12,7 @@ This repository contains code to meet the following exercise:
 - Open the solution file in Visual Studio 2019
 - Build and Run
 
-There are 2 users to log in with
+There are 2 users to log in with (case sensitive!)
 - Chris with password "secure"
 - Test with password "test"
 
