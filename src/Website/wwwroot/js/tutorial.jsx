@@ -11,6 +11,7 @@
 
       this.handleTileClicked = this.handleTileClicked.bind(this);
       this.swapTile = this.swapTile.bind(this);
+      this.startLevel = this.startLevel.bind(this);
    }
 
    render() {
@@ -28,8 +29,13 @@
       return (
          <div className="container-fluid">
             <h1>Tile Puzzle</h1>
+
             <div className="row tile-puzzle">
                {tiles}
+            </div>
+
+            <div className="row d-flex">
+               <button onClick={this.startLevel} className="mx-auto">Start Level</button>
             </div>
          </div>
       );
@@ -54,6 +60,15 @@
 
       newTiles[tile2Index] = tile1;
       newTiles[tile1Index] = tile2;
+
+      const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null });
+      this.setState(newState);
+   }
+
+   startLevel() {
+
+      let newTiles = [...this.state.tiles];
+      newTiles.sort(() => Math.random() - 0.5);
 
       const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null });
       this.setState(newState);
