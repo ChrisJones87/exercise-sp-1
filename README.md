@@ -19,7 +19,7 @@ There are 2 users to log in with (case sensitive!)
 
 # Solution
 
-To meet these goals, I:
+## To meet these goals, I:
 
 - Created an ASP.NET MVC website as well as using bootstrap 4 for layout/UI
 - Set up Entity Framework Core to store a list of Users
