@@ -10,7 +10,8 @@ using Website.Models;
 namespace Website.Controllers
 {
 
-   [Authorize]
+   // TODO: Re-add
+   //[Authorize]
    public class HomeController : Controller
    {
       private readonly ILogger<HomeController> _logger;

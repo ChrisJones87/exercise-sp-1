@@ -7,10 +7,6 @@ a.navbar-brand {
    word-break: break-all;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-   color: #0366d6;
-}
 
 .btn-primary {
    color: #fff;
@@ -77,4 +73,22 @@ body {
 
 .login-box {
    min-width: 500px;
+}
+
+
+/*
+   Tile Puzzla Game
+*/
+
+.tile-puzzle {
+   background-color:#e5e5e5
+}
+
+.tile {
+   background-color: #1b6ec2;
+   height: 150px;
+}
+
+.tile-selected {
+   background-color: red;
 }
