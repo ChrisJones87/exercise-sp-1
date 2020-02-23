@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Website.Data;
 using Website.Data.Models;
 using Website.Models;
+using Website.Utilities;
 
 namespace Website.Controllers
 {
@@ -46,7 +47,7 @@ namespace Website.Controllers
             return View("Index", login);
          }
 
-         var hashedPassword = Utilities.HashPassword(login.Password, user.Salt);
+         var hashedPassword = PasswordUtilities.HashPassword(login.Password, user.Salt);
 
          if (user.Password != hashedPassword)
          {

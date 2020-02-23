@@ -2,9 +2,9 @@ using System;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Website
+namespace Website.Utilities
 {
-   public static class Utilities
+   public static class PasswordUtilities
    {
       /// <summary>
       /// Generates a 128 bit salt for hashing passwords securely

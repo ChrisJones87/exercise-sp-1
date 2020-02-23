@@ -1,19 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using React.AspNet;
 using Website.Data;
-using Website.Data.Models;
 
 namespace Website
 {
@@ -30,12 +25,16 @@ namespace Website
       public void ConfigureServices(IServiceCollection services)
       {
          services.AddHttpContextAccessor();
+
+         // Add React and V8 JS engine support
          services.AddReact();
          services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
                  .AddV8();
 
+         // Add MVC controllers and views
          services.AddControllersWithViews();
 
+         // Add cookie authentication middleware
          services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                  .AddCookie(options =>
                  {
@@ -43,11 +42,11 @@ namespace Website
                     options.LogoutPath="/Authentication/Logout";
                  });
 
+         // Configure EF Core and use the in-memory database for demo purposes
          services.AddDbContext<WebsiteDatabaseContext>(options =>
          {
             options.UseInMemoryDatabase("Website");
          });
-         //services.AddEntityFrameworkInMemoryDatabase();
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,14 +63,12 @@ namespace Website
             app.UseHsts();
          }
 
-         SeedDatabase(app);
+         // Set up the database and apply test data
+         app.SeedDatabase();
 
          app.UseHttpsRedirection();
 
-         app.UseReact(config =>
-         {
-
-         });
+         app.UseReact(config =>{});
          app.UseStaticFiles();
 
          app.UseRouting();
@@ -87,45 +84,6 @@ namespace Website
          });
       }
 
-      private static void SeedDatabase(IApplicationBuilder app)
-      {
-         using var scope = app.ApplicationServices.CreateScope();
-         
-         using var context = scope.ServiceProvider.GetRequiredService<WebsiteDatabaseContext>();
-
-         var chris = CreateUserChris();
-         var test = CreateUserTest();
-
-         context.Users.Add(chris);
-         context.Users.Add(test);
-
-         context.SaveChanges();
-      }
-
-      private static User CreateUserChris()
-      {
-         var password = Utilities.HashPassword("secure");
-
-         return new User
-         {
-            Username = "Chris",
-            Name = "Christopher Jones",
-            Password = password.Password,
-            Salt = password.Salt
-         };
-      }
-
-      private static User CreateUserTest()
-      {
-         var password = Utilities.HashPassword("test");
-
-         return new User
-         {
-            Username = "Test",
-            Name = "Test User",
-            Password = password.Password,
-            Salt = password.Salt
-         };
-      }
+      
    }
 }
