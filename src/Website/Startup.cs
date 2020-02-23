@@ -94,7 +94,10 @@ namespace Website
          using var context = scope.ServiceProvider.GetRequiredService<WebsiteDatabaseContext>();
 
          var chris = CreateUserChris();
+         var test = CreateUserTest();
+
          context.Users.Add(chris);
+         context.Users.Add(test);
 
          context.SaveChanges();
       }
@@ -107,6 +110,19 @@ namespace Website
          {
             Username = "Chris",
             Name = "Christopher Jones",
+            Password = password.Password,
+            Salt = password.Salt
+         };
+      }
+
+      private static User CreateUserTest()
+      {
+         var password = Utilities.HashPassword("test");
+
+         return new User
+         {
+            Username = "Test",
+            Name = "Test User",
             Password = password.Password,
             Salt = password.Salt
          };
