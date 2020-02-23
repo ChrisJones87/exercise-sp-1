@@ -38,5 +38,7 @@ To meet these goals, I:
 # TODO
 
 - Timer for levels
+- Multiple difficulties
+- Multiple levels (images)
 - Api to store leaderboard of times and usernames
 - Additional styling to remove bootstrap feel
