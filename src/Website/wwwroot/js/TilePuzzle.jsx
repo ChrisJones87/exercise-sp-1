@@ -98,7 +98,6 @@
       const newState = Object.assign({}, { ...this.state }, { selectedTile: null, started: false });
       this.setState(newState);
    }
-
 }
 
 class Tile extends React.Component {
