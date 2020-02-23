@@ -5,6 +5,7 @@ This repository contains code to meet the following exercise:
 - Create a 2 page website using asp.net core where the second page is secured and can only be accessed once the user is logged in via the first page
 - Store credentials securely
 - Second page must utilise a JS front-end language framework such as Angular or React and to be creative with what functionality it has
+- Show any design patterns etc.
 
 # Trying It Out
 
@@ -34,6 +35,14 @@ To meet these goals, I:
   the tiles are shuffled and the user has to put the image back together again. Once they are back a congratulations message is shown. 
   The user can also reset during a level to show the original image and start over.
 - The logout link logs the user out returning to the login page
+
+## Design Patterns
+
+- MVC is used for the presentation layer for the main website
+- The mediator design pattern is used to separate the controllers from the database login
+  - The MediatR library is used
+  - Sign In and Sign Out are turned into commands (SignInCommand and SignOutCommand)
+  - Handlers for each take these commands and perform the sign in and out functionality. The controllers are only used for routing, model binding and returning the appropriate views.
 
 # TODO
 
