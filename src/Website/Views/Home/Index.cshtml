@@ -3,14 +3,23 @@
 }
 
 
-
-<div class="text-center">
-   <h1 class="display-4">Welcome @Context.User.Identity.Name</h1>
-
-</div>
-
-<div class="container d-flex">
-   <div id="content" class=" m-auto"></div>
+<div class="container mt-4">
+   <div class="row">
+      <div class="col text-center">
+         <h1 class="display-4">Welcome @Context.User.Identity.Name</h1>
+         <p class="mt-4">
+            Press <em>Start Level</em> below, the tiles will shuffle. Select a tile by clicking on it then clicking on another will swap them over.
+            Try to put the image back together. Press <em>Reset</em> to reset the level and show the original image.
+         </p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col">
+         <div class="d-flex">
+            <div id="content" class=" m-auto"></div>
+         </div>
+      </div>
+   </div>
 </div>
 
 @section Scripts

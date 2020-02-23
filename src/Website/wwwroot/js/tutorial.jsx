@@ -6,36 +6,52 @@
       var tileCount = 6 * 4;
       this.state = {
          tiles: [...Array(tileCount).keys()],
-         selectedTile: null
+         selectedTile: null,
+         started: false
       }
 
       this.handleTileClicked = this.handleTileClicked.bind(this);
       this.swapTile = this.swapTile.bind(this);
       this.startLevel = this.startLevel.bind(this);
+      this.resetLevel = this.resetLevel.bind(this);
+   }
+
+   getContent() {
+      const colClasses = `col-2 p-0 m-0`;
+
+      if (this.state.started) {
+
+         const tiles = this.state.tiles.map((tileId, index, arr) => {
+            let selectedTile = tileId === this.state.selectedTile ? true : false;
+
+            return (
+               <div key={index} className={colClasses} onClick={() => this.handleTileClicked(tileId)}>
+                  <Tile tileId={tileId} selectedTile={selectedTile}></Tile>
+               </div>);
+         });
+
+         return tiles;
+      } else {
+         return (<img src='/images/plasma.jpg' />);
+      }
    }
 
    render() {
-      const colClasses = `col-2 p-0 m-0`;
+      
 
-      const tiles = this.state.tiles.map((tileId, index, arr) => {
-         let selectedTile = tileId === this.state.selectedTile ? true : false;
-
-         return (
-            <div key={index} className={colClasses} onClick={() => this.handleTileClicked(tileId)}>
-               <Tile tileId={tileId} selectedTile={selectedTile}></Tile>
-            </div>);
-      });
+      const content = this.getContent();
 
       return (
          <div className="container-fluid">
-            <h1>Tile Puzzle</h1>
+            <h1 className="text-center">Tile Puzzle</h1>
 
             <div className="row tile-puzzle">
-               {tiles}
+               {content}
             </div>
 
-            <div className="row d-flex">
-               <button onClick={this.startLevel} className="mx-auto">Start Level</button>
+            <div className="row d-flex mt-2">
+               <button onClick={this.startLevel} className="btn btn-primary mx-auto">Start Level</button>
+               <button onClick={this.resetLevel} className="btn btn-danger mx-auto">Reset</button>
             </div>
          </div>
       );
@@ -70,7 +86,12 @@
       let newTiles = [...this.state.tiles];
       newTiles.sort(() => Math.random() - 0.5);
 
-      const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null });
+      const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null, started: true });
+      this.setState(newState);
+   }
+
+   resetLevel() {
+      const newState = Object.assign({}, { ...this.state }, { selectedTile: null, started: false });
       this.setState(newState);
    }
 
@@ -90,15 +111,15 @@ class Tile extends React.Component {
       this.state = {
          tileWidth: 600 / 6,
          tileHeight: 400 / 4,
-         top : top,
-         left : left
+         top: top,
+         left: left
       };
    }
 
    render() {
       const selectedClass = this.props.selectedTile ? "tile-selected" : "";
       const tileClasses = `tile w-100 text-center`;
-      const overlayClasses= `w-100 h-100 ${selectedClass}`
+      const overlayClasses = `w-100 h-100 ${selectedClass}`
       const tileId = this.props.tileId;
 
       const tileWidth = 600 / 6;
