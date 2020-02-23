@@ -7,13 +7,15 @@
       this.state = {
          tiles: [...Array(tileCount).keys()],
          selectedTile: null,
-         started: false
+         started: false,
+         success: false
       }
 
       this.handleTileClicked = this.handleTileClicked.bind(this);
       this.swapTile = this.swapTile.bind(this);
       this.startLevel = this.startLevel.bind(this);
       this.resetLevel = this.resetLevel.bind(this);
+      this.checkWinCondition = this.checkWinCondition.bind(this);
    }
 
    getContent() {
@@ -38,12 +40,16 @@
 
    render() {
 
-
       const content = this.getContent();
+
+      const message = this.state.success ? "Congratulations!" : (this.state.started ? "Level started" : "Press Start Level to begin");
+      const messageClasses = this.state.success ? "text-center text-success" : "text-center";
+      const resetLevelState = this.state.started ? false : true;
 
       return (
          <div className="container-fluid">
             <h1 className="text-center">Tile Puzzle</h1>
+            <p className={messageClasses}>{message}</p>
 
             <div className="row tile-puzzle">
                {content}
@@ -54,7 +60,7 @@
                   <button onClick={this.startLevel} className="btn btn-primary w-100">Start Level</button>
                </div>
                <div className="col">
-                  <button onClick={this.resetLevel} className="btn btn-danger w-100">Reset</button>
+                  <button onClick={this.resetLevel} className="btn btn-danger w-100" disabled={resetLevelState}>Reset</button>
                </div>
             </div>
          </div>
@@ -81,7 +87,19 @@
       newTiles[tile2Index] = tile1;
       newTiles[tile1Index] = tile2;
 
-      const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null });
+      const success = this.checkWinCondition(newTiles);
+      const started = !success; 
+
+      const newState = Object.assign(
+         {},
+         { ...this.state },
+         {
+            tiles: newTiles,
+            selectedTile: null,
+            success: success,
+            started: started
+         });
+
       this.setState(newState);
    }
 
@@ -90,13 +108,27 @@
       let newTiles = [...this.state.tiles];
       newTiles.sort(() => Math.random() - 0.5);
 
-      const newState = Object.assign({}, { ...this.state }, { tiles: newTiles }, { selectedTile: null, started: true });
+      const newState = Object.assign(
+         {},
+         { ...this.state },
+         { tiles: newTiles },
+         { selectedTile: null, started: true, success: false });
+
       this.setState(newState);
    }
 
    resetLevel() {
-      const newState = Object.assign({}, { ...this.state }, { selectedTile: null, started: false });
+      const newState = Object.assign({}, { ...this.state }, { selectedTile: null, started: false, success: false });
       this.setState(newState);
+   }
+
+   checkWinCondition(tiles) {
+      for (let index = 0; index < 6 * 4; index++) {
+         if (tiles[index] !== index)
+            return false;
+      }
+
+      return true;
    }
 }
 
